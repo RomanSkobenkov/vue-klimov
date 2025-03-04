@@ -3,46 +3,43 @@ const resetButton = document.querySelector('button#reset');
 
 // здесь состояние
 // реализуем изменение состояния через единую точку
-function useCounter() {
-    // прячем значение внутрь функции
-    let counter = 5;
+const counterState = {
+    // нижнее подчёркивание - это соглашение
+    // оно говорит о том, что не нужно менять свойство на прямую,
+    // а то ноги сломаем
+    _value: 5,
 
-    return {
-        // получение состояния
-        getCounter() {
-            return counter;
-        },
-        // изменение состояния
-        setCounter(newValue) {
-            counter = newValue;
-            // чтобы никогда не забывать обновлять отображение
-            // обновляем его при каждом изменении значения на новое
-            renderCounter();
-        },
+    // counterState.value - это обращение к этому методу
+    get value() {
+        return this._value;
+    },
+
+    // counterState.value = 123 - это обращение к этому методу
+    set value(newValue) {
+        this._value = newValue;
+        renderCounter();
     }
 }
 
 function isCounterTooBig() {
-    return getCounter() > 10;
+    return counterState.value > 10;
 }
 
 // отрисовка (+ обновление) текущего состояния
 function renderCounter() {
-    counterButton.textContent = `счётчик ${getCounter()}`;
+    counterButton.textContent = `счётчик ${counterState.value}`;
 
     counterButton.classList.toggle('red', isCounterTooBig());
 }
 
-const { getCounter, setCounter } = useCounter();
-
 counterButton.addEventListener('click', () => {
-    setCounter(getCounter() + 1);
+    counterState.value += 1;
 });
 
 resetButton.addEventListener('click', () => {
-    setCounter(0);
+    counterState.value = 0;
 });
 
 setInterval(() => {
-    setCounter(getCounter() + 1);
+    counterState.value += 1;
 }, 1000);
