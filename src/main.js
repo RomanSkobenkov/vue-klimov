@@ -2,34 +2,47 @@ const counterButton = document.querySelector('button#counter');
 const resetButton = document.querySelector('button#reset');
 
 // здесь состояние
-let counter = 5;
+// реализуем изменение состояния через единую точку
+function useCounter() {
+    // прячем значение внутрь функции
+    let counter = 5;
+
+    return {
+        // получение состояния
+        getCounter() {
+            return counter;
+        },
+        // изменение состояния
+        setCounter(newValue) {
+            counter = newValue;
+            // чтобы никогда не забывать обновлять отображение
+            // обновляем его при каждом изменении значения на новое
+            renderCounter();
+        },
+    }
+}
 
 function isCounterTooBig() {
-    return counter > 10;
+    return getCounter() > 10;
 }
 
 // отрисовка (+ обновление) текущего состояния
 function renderCounter() {
-    counterButton.textContent = `счётчик ${counter}`;
+    counterButton.textContent = `счётчик ${getCounter()}`;
 
     counterButton.classList.toggle('red', isCounterTooBig());
 }
 
-renderCounter();
+const { getCounter, setCounter } = useCounter();
 
 counterButton.addEventListener('click', () => {
-    counter = counter + 1;
-    renderCounter();
+    setCounter(getCounter() + 1);
 });
 
 resetButton.addEventListener('click', () => {
-    counter = 0;
-    renderCounter();
+    setCounter(0);
 });
 
 setInterval(() => {
-    counter += 1;
-    // всё будет плохо, если мы забудем это:
-    renderCounter(); // а если таких точек много?
-    // какова вероятность не забыть?
+    setCounter(getCounter() + 1);
 }, 1000);
