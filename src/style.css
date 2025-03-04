@@ -86,3 +86,6 @@ button:focus-visible {
   justify-content: space-between;
   flex-direction: column;
 }
+button.red {
+  background-color: red;
+}
