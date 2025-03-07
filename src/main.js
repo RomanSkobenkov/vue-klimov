@@ -9,14 +9,19 @@ const isCounterTooBig = computed(() => counterState.value > 10);
 
 // следим за его изменениями и делаем обновление представления
 watchEffect(() => {
-    // можно вообще вот так: watchEffect(renderCounter); но так читается похуже
     renderCounter();
 });
 
-// отрисовка (+ обновление) текущего состояния
+watchEffect(() => {
+    updateCounterColor();
+});
+
 function renderCounter() {
     counterButton.textContent = `счётчик ${counterState.value}`;
+}
 
+// вынесем навешивание класса в отдельную функцию
+function updateCounterColor() {
     counterButton.classList.toggle('red', isCounterTooBig.value);
 }
 

@@ -297,3 +297,50 @@ function isCounterTooBig() {
 // и обращаться тогда:
 isCounterTooBig.value
 ```
+
+## МАГИЯ!
+
+Сначала было так:
+
+```jsx
+
+watchEffect(() => {
+    renderCounter();
+});
+
+function renderCounter() {
+    counterButton.textContent = `счётчик ${counterState.value}`;
+    counterButton.classList.toggle('red', isCounterTooBig.value);
+}
+```
+
+Но вынесем навешивание класса в отдельную функцию **и отдельный `watchEffect`**:
+
+```jsx
+watchEffect(() => {
+    renderCounter();
+});
+
+watchEffect(() => {
+    updateCounterColor();
+});
+
+function renderCounter() {
+    counterButton.textContent = `счётчик ${counterState.value}`;
+}
+
+// вынесем навешивание класса в отдельную функцию
+function updateCounterColor() {
+    counterButton.classList.toggle('red', isCounterTooBig.value);
+}
+```
+
+И теперь `updateCounterColor` вызовется только ***дважды!*** Один раз при инициализации и один раз при выполнении условия. А если представить, что в `updateCounterColor` куча тяжёлой логики частое обновления html…
+
+<aside>
+💡
+
+Такое точечное обновление html ещё называют ***Fine-grained reactivity***. Т.е. мы обновляем элемент только когда ***его*** данные изменились.
+
+</aside>
+
