@@ -1,4 +1,4 @@
-import { ref, watch } from "vue";
+import { ref, watchEffect } from "vue";
 
 const counterButton = document.querySelector('button#counter');
 const resetButton = document.querySelector('button#reset');
@@ -7,7 +7,8 @@ const resetButton = document.querySelector('button#reset');
 const counterState = ref(5);
 
 // следим за его изменениями и делаем обновление представления
-watch(counterState, () => {
+watchEffect(() => {
+    // можно вообще вот так: watchEffect(renderCounter); но так читается похуже
     renderCounter();
 });
 
