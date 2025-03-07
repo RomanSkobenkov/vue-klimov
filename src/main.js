@@ -1,10 +1,11 @@
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, computed } from "vue";
 
 const counterButton = document.querySelector('button#counter');
 const resetButton = document.querySelector('button#reset');
 
 // создаём объект
 const counterState = ref(5);
+const isCounterTooBig = computed(() => counterState.value > 10);
 
 // следим за его изменениями и делаем обновление представления
 watchEffect(() => {
@@ -20,7 +21,7 @@ function isCounterTooBig() {
 function renderCounter() {
     counterButton.textContent = `счётчик ${counterState.value}`;
 
-    counterButton.classList.toggle('red', isCounterTooBig());
+    counterButton.classList.toggle('red', isCounterTooBig.value);
 }
 
 counterButton.addEventListener('click', () => {

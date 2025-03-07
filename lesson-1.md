@@ -283,3 +283,17 @@ function renderCounter() {
 И Vue (внутри `watchEffect`) сразу вызывает функцию, которую ему передали и потом такой:
 
 *“Yo! Хе-хей! Да у меня здесь кажется функция, которая внутри себя обращается к value от `counterState`! А это значит, что **эта функция зависит от `counterState`**! Поэтому когда `counterState` будет изменяться, я автоматически буду вызывать перерисовку.“*
+
+Пример `computed`:
+
+```jsx
+const isCounterTooBig = computed(() => counterState.value > 10);
+
+// вместо
+function isCounterTooBig() {
+    return counterState.value > 10;
+}
+
+// и обращаться тогда:
+isCounterTooBig.value
+```
