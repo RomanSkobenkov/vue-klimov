@@ -13,10 +13,6 @@ watchEffect(() => {
     renderCounter();
 });
 
-function isCounterTooBig() {
-    return counterState.value > 10;
-}
-
 // отрисовка (+ обновление) текущего состояния
 function renderCounter() {
     counterButton.textContent = `счётчик ${counterState.value}`;
