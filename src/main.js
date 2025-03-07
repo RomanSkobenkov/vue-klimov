@@ -1,25 +1,15 @@
+import { ref, watch } from "vue";
+
 const counterButton = document.querySelector('button#counter');
 const resetButton = document.querySelector('button#reset');
 
-// здесь состояние
-// реализуем изменение состояния через единую точку
-const counterState = {
-    // нижнее подчёркивание - это соглашение
-    // оно говорит о том, что не нужно менять свойство на прямую,
-    // а то ноги сломаем
-    _value: 5,
+// создаём объект
+const counterState = ref(5);
 
-    // counterState.value - это обращение к этому методу
-    get value() {
-        return this._value;
-    },
-
-    // counterState.value = 123 - это обращение к этому методу
-    set value(newValue) {
-        this._value = newValue;
-        renderCounter();
-    }
-}
+// следим за его изменениями и делаем обновление представления
+watch(counterState, () => {
+    renderCounter();
+});
 
 function isCounterTooBig() {
     return counterState.value > 10;
